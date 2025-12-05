@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coming Soon</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100%; overflow:hidden; font-family:'Segoe UI', Tahoma, sans-serif; background:#000; color:white; }
+
+    #vanta-bg { width:100%; height:100%; position: fixed; top:0; left:0; z-index:0; }
+
+    .overlay { position:absolute; width:100%; height:100%; top:0; left:0; pointer-events:none; z-index:2; }
+
+    .content {
+      position: relative; z-index:3; width:100%; height:100%;
+      display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px;
+    }
+
+    h1 {
+      font-size:5rem; letter-spacing:10px; margin-bottom:0.3em;
+      text-shadow: 0 0 20px #fff, 0 0 40px #fff, 0 0 60px #0ff, 0 0 80px #0ff, 0 0 100px #0ff;
+      opacity:0;
+      animation: fadeInGlow 2s ease-out 0.8s forwards, flicker 3s infinite;
+      background: linear-gradient(45deg,#0ff,#fff,#0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      font-size:1.4rem; max-width:800px; margin-top:0.5em;
+      opacity:0; animation: fadeIn 2s ease-out 1.6s forwards;
+      text-shadow:0 0 10px rgba(255,255,255,0.6);
+    }
+
+    .sub {
+      margin-top:1.2em; font-size:1rem; color:#ccc; opacity:0;
+      animation: fadeIn 2s ease-out 2.4s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(40px) scale(0.95); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    @keyframes fadeInGlow {
+      from { opacity:0; transform:scale(0.95); filter:blur(10px); }
+      to { opacity:1; transform:scale(1); filter:blur(0); }
+    }
+
+    @keyframes flicker {
+      0%,19%,21%,23%,25%,54%,56%,100% { opacity:1; }
+      20%,22%,24%,55% { opacity:0.8; }
+    }
+
+    /* Particle star effect */
+    .star {
+      position:absolute;
+      background: rgba(255,255,255,0.8);
+      border-radius:50%;
+      pointer-events:none;
+      will-change: transform, opacity;
+    }
+
+    @media(max-width:768px){
+      h1 { font-size:3rem; letter-spacing:6px; }
+      p { font-size:1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="vanta-bg"></div>
+
+  <div class="overlay">
+    <div class="content">
+      <h1>COMING SOON</h1>
+      <p>I'm trying to cook something. Guess the wait will be worth it.</p>
+      <div class="sub">Stay Tuned 🚀</div>
+    </div>
+  </div>
+
+  <!-- Include three.js and Vanta.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.net.min.js"></script>
+  <script>
+    VANTA.NET({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.2,
+      scaleMobile: 1.0,
+      backgroundColor: 0x000011,
+      color: 0x00ffff,
+      backgroundAlpha: 0.9,
+      quantity: 4.0
+    });
+  </script>
+
+  <!-- Floating particles / stars -->
+  <script>
+    const overlay = document.querySelector('.overlay');
+
+    function createStar() {
+      const star = document.createElement('div');
+      const size = Math.random() * 3 + 1;
+      star.classList.add('star');
+      star.style.width = star.style.height = size + 'px';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.opacity = Math.random();
+      overlay.appendChild(star);
+
+      const speed = Math.random() * 2000 + 2000;
+      const direction = Math.random() < 0.5 ? -1 : 1;
+      star.animate([
+        { transform: 'translateY(0)', opacity: star.style.opacity },
+        { transform: `translateY(${direction * 50 + 50}px)`, opacity: 0 }
+      ], {
+        duration: speed,
+        iterations: Infinity,
+        easing: 'linear'
+      });
+    }
+
+    for(let i=0;i<60;i++) createStar();
+  </script>
+</body>
+</html>
